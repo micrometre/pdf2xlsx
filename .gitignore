@@ -1,6 +1,7 @@
 pdfs/*.pdf
 *.pdf
 xlsx_output/*.xlsx
+*.xlsx
 .venv/
 output/
 *.pyc
