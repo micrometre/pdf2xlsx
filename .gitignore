@@ -52,3 +52,5 @@ logs/
 data/
 nginx/certs/
 frontend/node_modules
+dist/
+build/
