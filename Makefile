@@ -6,3 +6,6 @@ install:
 	@echo ""
 	@echo "✅ Installation complete!"
 	@echo ""
+
+clean:
+	rm -rf xlsx_outputs

@@ -9,10 +9,6 @@ Convert tables from PDF files to Excel (XLSX) format.
    ```bash
    pip install -r requirements.txt
    ```
-3. Ensure Java is installed (required for `tabula-py`):
-   ```bash
-   java -version
-   ```
 
 ## Usage
 
@@ -36,5 +32,4 @@ Output files will be named with `.xlsx` extension. Each table in a PDF is saved 
 ## Requirements
 
 - Python 3.7+
-- Java (for PDF table extraction)
-- Dependencies listed in `requirements.txt`
+- Dependencies listed in `requirements.txt` (pandas, pdfplumber, openpyxl)

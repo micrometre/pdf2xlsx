@@ -3,20 +3,18 @@ import sys
 from pathlib import Path
 
 import pandas as pd
-import pdfplumber
+
+try:
+	from tabula import read_pdf
+except Exception as e:
+	raise ImportError(
+		"tabula-py is not installed or cannot be imported. Install it with `pip install tabula-py openpyxl` and ensure Java is available on your PATH."
+	) from e
 
 
 def convert_pdf_to_xlsx(pdf_path: Path, xlsx_path: Path) -> bool:
-	tables = []
 	try:
-		with pdfplumber.open(pdf_path) as pdf:
-			for page in pdf.pages:
-				page_tables = page.extract_tables()
-				for table in page_tables:
-					if table:  # Skip empty tables
-						# Convert table to DataFrame
-						df = pd.DataFrame(table[1:], columns=table[0])
-						tables.append(df)
+		tables = read_pdf(str(pdf_path), pages="all", multiple_tables=True)
 	except Exception as e:
 		print(f"Failed to read PDF {pdf_path}: {e}")
 		return False
