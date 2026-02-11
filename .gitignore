@@ -1,4 +1,5 @@
 pdfs/*.pdf
+*.pdf
 xlsx_output/*.xlsx
 .venv/
 output/
