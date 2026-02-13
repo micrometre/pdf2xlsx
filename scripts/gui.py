@@ -1,5 +1,6 @@
 import argparse
 import sys
+import subprocess
 from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
@@ -7,12 +8,43 @@ import threading
 
 import pandas as pd
 
+def get_java_path():
+    """Get Java executable path, checking bundled Java first"""
+    
+    # If running as PyInstaller bundle
+    if hasattr(sys, '_MEIPASS'):
+        base_path = Path(sys._MEIPASS)
+        # Check for bundled Java in common locations
+        java_candidates = [
+            base_path / "java" / "bin" / "java.exe",
+            base_path / "jre" / "bin" / "java.exe",
+            base_path / "jdk" / "bin" / "java.exe",
+            base_path / "runtime" / "bin" / "java.exe",
+        ]
+        
+        for java_path in java_candidates:
+            if java_path.exists():
+                return str(java_path)
+    
+    # Fall back to system Java
+    return "java"
+
+import os
+from pathlib import Path
+
+
+java_path = get_java_path()
+if java_path:
+    os.environ['JAVA_HOME'] = str(Path(java_path).parent.parent)
+    os.environ['PATH'] = str(Path(java_path).parent) + os.pathsep + os.environ['PATH']
+
 try:
     from tabula import read_pdf
 except Exception as e:
     raise ImportError(
-        "tabula-py is not installed or cannot be imported. Install it with `pip install tabula-py openpyxl` and ensure Java is available on your PATH."
+        "Java is required but not found. Please install Java 8+ or bundle it with the application."
     ) from e
+
 
 
 def convert_pdf_to_xlsx(pdf_path: Path, xlsx_path: Path, callback=None) -> bool:
